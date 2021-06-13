@@ -8,9 +8,6 @@ const { Client } = require("discord.js")
 //THe Packages have been Loaded
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
-const bot = new Discord.Client({disableEveryone: true});
-bot.commands = new Discord.Collection();
-bot.aliases = new Discord.Collection();
 //The Collection for the Commands and its Aliases
 ["command", "events"].forEach(handler => {
   require(`./handlers/${handler}`)(client);
