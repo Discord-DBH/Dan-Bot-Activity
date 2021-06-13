@@ -1,10 +1,7 @@
 const fs = require('fs');
-const chalk = require('chalk');
 const Discord = require("discord.js")
 const client = new Discord.Client()
 const config = require("./config.json")
-const figlet = require('figlet');
-const { Client } = require("discord.js")
 //THe Packages have been Loaded
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
