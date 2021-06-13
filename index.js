@@ -1,12 +1,14 @@
+// Packages
 const Discord = require("discord.js")
-const client = new Discord.Client()
 const config = require("./config.json")
-//THe Packages have been Loaded
+
+// Bot
+const client = new Discord.Client()
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
-//The Collection for the Commands and its Aliases
+client.login(config.token)
+
+// Command Handler
 ["command", "events"].forEach(handler => {
   require(`./handlers/${handler}`)(client);
 });
-//The Handlers have Been Loaded
-client.login(config.token)
