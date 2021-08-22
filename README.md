@@ -12,6 +12,6 @@ HOW TO USE THE BOT!
 
 2. You do npm install to install the packages
 
-3. You then do node . 
+3. You then do node . or node index.js 
 
 4. Then your done!
