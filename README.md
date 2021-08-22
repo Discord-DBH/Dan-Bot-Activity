@@ -6,9 +6,12 @@ Hello if your seeing this you are probably wondering about the DanBot activity b
 
 
 
-HOW TO START!
+HOW TO USE THE BOT!
 
 1. You chance the config file in config.js
+
 2. You do npm install to install the packages
+
 3. You then do node . 
+
 4. Then your done!
