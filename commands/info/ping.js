@@ -2,13 +2,14 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
   name: 'ping',
-  run: async (client, message, args) => {
+  description: 'Check the bot\'s latency',
+  async execute(interaction) {
     const embed = new MessageEmbed()
       .setTitle('Pong!')
       .setColor('RANDOM')
-      .addField('🏓 Latency', `${Date.now() - message.createdTimestamp}ms`, true)
-      .addField('💻 API', `${Math.round(client.ws.ping)}ms`, true);
+      .addField('🏓 Latency', `${Date.now() - interaction.createdTimestamp}ms`, true)
+      .addField('💻 API', `${Math.round(interaction.client.ws.ping)}ms`, true);
 
-    message.channel.send({ embeds: [embed] });
+    await interaction.reply({ embeds: [embed] });
   }
 };
