@@ -1,14 +1,17 @@
 // Packages
-const Discord = require("discord.js")
-const config = require("./config.json")
+const Discord = require("discord.js");
+const { Client, Collection } = require("discord.js");
+const config = require("./config.json");
 
 // Bot
-const client = new Discord.Client()
-client.commands = new Discord.Collection();
-client.aliases = new Discord.Collection();
-client.login(config.token)
+const client = new Client({
+    intents: ["GUILDS", "GUILD_MESSAGES"]
+});
+client.commands = new Collection();
+client.aliases = new Collection();
+client.login(config.token);
 
 // Command Handler
-["command", "events"].forEach(handler => {
-  require(`./handlers/${handler}`)(client);
+["command", "event"].forEach(handler => {
+    require(`./handlers/${handler}`)(client);
 });
