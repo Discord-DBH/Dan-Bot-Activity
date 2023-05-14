@@ -23,7 +23,7 @@ module.exports = {
 
         //Made the Console Fancy XD
 
-        const danbot = client.guilds.cache.get('639477525927690240');
+        const danbot = client.guilds.cache.get('1049021414604296282');
         const humans = danbot.members.cache.filter((mem) => !mem.user.bot).size;
         client.user.setActivity(`Watching over ${humans} DanBot Members!`, { type: 'WATCHING' }); //Setting the Activity of the Client
     },
