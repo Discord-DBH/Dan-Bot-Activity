@@ -1,19 +1,30 @@
-const { theprefix } = require("../config.json");
-const prefix = theprefix;
+const { prefix } = require("../config.json");
 
-module.exports.run = async (client, message) => {
-  if (message.author.bot) return;
-  if (!message.guild) return;
-  if (!message.content.startsWith(prefix)) return;
-if (!message.member)
-    message.member = await message.guild.fetchMember(message);
-const args = message.content
-    .slice(prefix.length)
-    .trim()
-    .split(/ +/g);
-const cmd = args.shift().toLowerCase();
-if (cmd.length === 0) return;
-let command = client.commands.get(cmd);
-if (!command) command = client.commands.get(client.aliases.get(cmd));
-if (command) command.run(client, message, args);
+module.exports = {
+    name: "messageCreate",
+    async execute(message, client) {
+        if (message.author.bot) return;
+        if (!message.guild) return;
+        if (!message.content.startsWith(prefix)) return;
+
+        if (!message.member) {
+            message.member = await message.guild.members.fetch(message.author);
+        }
+
+        const args = message.content.slice(prefix.length).trim().split(/ +/);
+        const commandName = args.shift().toLowerCase();
+
+        if (commandName.length === 0) return;
+
+        const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+
+        if (!command) return;
+
+        try {
+            await command.execute(message, args, client);
+        } catch (error) {
+            console.error(error);
+            message.reply('there was an error trying to execute that command!');
+        }
+    },
 };
