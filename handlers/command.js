@@ -1,22 +1,44 @@
 const { readdirSync } = require("fs");
+const { join } = require("path");
 const ascii = require("ascii-table");
-let table = new ascii("Commands");
-table.setHeading("Command Name", "Command Status");
-module.exports = (client) => {
-    readdirSync("./commands/").forEach(dir => {
-        const commands = readdirSync(`./commands/${dir}/`).filter(file => file.endsWith(".js"));
-        for (let file of commands) {
-            let pull = require(`../commands/${dir}/${file}`);
-    
-            if (pull.name) {
-                client.commands.set(pull.name, pull);
-                table.addRow(file, '✔');
-            } else {
-                table.addRow(file, `❌  An Error Occured while Loading the Command`);
-                continue;
-            }
-            if (pull.aliases && Array.isArray(pull.aliases)) pull.aliases.forEach(alias => client.aliases.set(alias, pull.name));
-        }
-    });
-    console.log(table.toString());
+const table = new ascii().setHeading("Command", "Load Status");
+const commands = new Map();
+const aliases = new Map();
+
+const commandFiles = readdirSync(join(__dirname, "..", "commands")).filter(file =>
+  file.endsWith(".js")
+);
+
+for (const file of commandFiles) {
+  try {
+    const command = require(join(__dirname, "..", "commands", file));
+    if (typeof command.run !== "function") {
+      throw new TypeError(
+        `[ERROR]: run function is not defined in ${file} file.`
+      );
+    }
+    commands.set(command.name, command);
+    if (command.aliases && Array.isArray(command.aliases)) {
+      for (const alias of command.aliases) {
+        aliases.set(alias, command.name);
+      }
+    }
+    table.addRow(file, "✅");
+  } catch (err) {
+    console.log(
+      `Error loading command ${file}: ${err.message}`.replace(
+        `${__dirname}/`,
+        ""
+      )
+    );
+    table.addRow(file, "❌");
+    continue;
+  }
 }
+
+console.log(table.toString());
+
+module.exports = {
+  commands,
+  aliases
+};
