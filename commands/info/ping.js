@@ -1,14 +1,14 @@
-const Discord = require('discord.js');
+const { MessageEmbed } = require('discord.js');
+
 module.exports = {
-name: "ping",
-run: async (client, message, args) => {
-	const embed = new Discord.MessageEmbed();
-			embed.setTitle(`Ping Command!`);
-			embed.setURL(`https://www.youtube.com/watch?v=dQw4w9WgXcQ`);
-			embed.setColor('RANDOM');
-			embed.setDescription("\`Ping:\`");
-            embed.setFooter(client.ws.ping)
-			message.channel.send(embed);
+  name: 'ping',
+  run: async (client, message, args) => {
+    const embed = new MessageEmbed()
+      .setTitle('Pong!')
+      .setColor('RANDOM')
+      .addField('🏓 Latency', `${Date.now() - message.createdTimestamp}ms`, true)
+      .addField('💻 API', `${Math.round(client.ws.ping)}ms`, true);
 
-}}
-
+    message.channel.send({ embeds: [embed] });
+  }
+};
