@@ -2,8 +2,8 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
   name: 'ping',
-  description: 'Check the bot\'s latency',
-  async execute(interaction) {
+  description: 'Displays the bot\'s current latency and API ping.',
+  execute: async (interaction) => {
     const embed = new MessageEmbed()
       .setTitle('Pong!')
       .setColor('RANDOM')
