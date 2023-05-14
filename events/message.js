@@ -2,7 +2,7 @@ const { prefix } = require("../config.json");
 
 module.exports = {
     name: "messageCreate",
-    async execute(message, client) {
+    async run(message, client) {
         if (message.author.bot) return;
         if (!message.guild) return;
         if (!message.content.startsWith(prefix)) return;
