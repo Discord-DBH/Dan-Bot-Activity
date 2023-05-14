@@ -27,9 +27,13 @@ fs.readdirSync("./commands").forEach(dir => {
 fs.readdirSync("./events").forEach(file => {
   const event = require(`./events/${file}`);
   console.log(`Loaded event: ${event.name}`);
-  if (event.once) {
-    client.once(event.name, (...args) => event.run(client, ...args));
-  } else {
-    client.on(event.name, (...args) => event.run(client, ...args));
+  try {
+    if (event.once) {
+      client.once(event.name, (...args) => event.execute(client, ...args));
+    } else {
+      client.on(event.name, (...args) => event.execute(client, ...args));
+    }
+  } catch (error) {
+    console.error(`Error loading event ${event.name}: ${error}`);
   }
 });
