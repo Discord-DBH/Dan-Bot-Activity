@@ -12,10 +12,19 @@ client.aliases = new Collection();
 client.login(config.token);
 
 // Command Handler
-["command", "event"].forEach(handler => {
-    try {
-        require(`./handlers/${handler}`).run(client);
-    } catch (err) {
-        console.error(`Error loading ${handler} handler: ${err}`);
+const commandFiles = require("./handlers/command");
+for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+    client.commands.set(command.name, command);
+}
+
+// Event Handler
+const eventFiles = require("./handlers/event");
+for (const file of eventFiles) {
+    const event = require(`./events/${file}`);
+    if (event.once) {
+        client.once(event.name, (...args) => event.run(...args, client));
+    } else {
+        client.on(event.name, (...args) => event.run(...args, client));
     }
-});
+}
