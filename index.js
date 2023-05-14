@@ -1,12 +1,11 @@
 // Packages
-const Discord = require("discord.js");
-const { Client, Collection } = require("discord.js");
+const { Client, Collection, Intents } = require("discord.js");
 const config = require("./config.json");
 const fs = require("fs");
 
 // Bot
 const client = new Client({
-  intents: ["GUILDS", "GUILD_MESSAGES"]
+  intents: [Intents.FLAGS.GUILDS]
 });
 client.commands = new Collection();
 client.aliases = new Collection();
@@ -35,5 +34,21 @@ fs.readdirSync("./events").forEach(file => {
     }
   } catch (error) {
     console.error(`Error loading event ${event.name}: ${error}`);
+  }
+});
+
+// Slash Command Handler
+client.on('interactionCreate', async interaction => {
+  if (!interaction.isCommand()) return;
+  
+  const command = client.commands.get(interaction.commandName);
+  
+  if (!command) return;
+  
+  try {
+    await command.execute(interaction);
+  } catch (error) {
+    console.error(`Error executing slash command ${interaction.commandName}: ${error}`);
+    await interaction.reply({ content: 'An error occurred while executing this command.', ephemeral: true });
   }
 });
