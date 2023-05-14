@@ -13,5 +13,9 @@ client.login(config.token);
 
 // Command Handler
 ["command", "event"].forEach(handler => {
-    require(`./handlers/${handler}`)(client);
+    try {
+        require(`./handlers/${handler}`).run(client);
+    } catch (err) {
+        console.error(`Error loading ${handler} handler: ${err}`);
+    }
 });
